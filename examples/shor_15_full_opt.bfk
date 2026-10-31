@@ -1,0 +1,21 @@
+# |BF> Example 8: Shor's Order-Finding Algorithm for N = 15, a = 7 (6-Qubit Full Register, optimized)
+# Tape: [ c0 (0), c1 (1), y0 (2), y1 (3), y2 (4), y3 (5) ]
+# Identical to shor_15_full.bfk except that SWAP(y1, y3) is dropped from Controlled-U4:
+# U4 is the first operation on the target, which is still |1> = |1000> (y1 = y3 = 0), so that
+# transposition provably acts as the identity. This uses only the known *input* |1>, never the
+# (unknown) period, so it is not a "compiled Shor" shortcut.
+# 112 tokens | 18 native ^ tokens | exact phase readout
+
+H>H>+<
+[
+  >^H>H<^>H<H^>^H>H<^>H<H^<^H>H<^>H<H^
+  <
+]
+<
+[
+  >>^H>H<^>H<H^>^H>H<^>H<H^>^H>H<^>H<H^
+  <<+>+>+>+
+  <<<<<
+]
+>H[<-->]<H
+.>.

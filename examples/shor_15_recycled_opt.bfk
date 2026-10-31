@@ -1,0 +1,11 @@
+# |BF> Example 7: Subspace-Reduced 5-Qubit Semiclassical Shor's Algorithm (N = 15, a = 7)
+# Tape: [ q_ctrl (0), y0 (1), y1 (2), y2 (3), y3 (4) ]
+# Omits SWAP(y1, y3) in U4 since y1 = y3 = 0 on initial state |1⟩ = |1000⟩
+# 132 tokens | 18 native ^ tokens | exact phase readout
+
+>+<
+H [ >^H>H<^>H<H^>^H>H<^>H<H^<^H>H<^>H<H^ < ] H .
+[ >>>>+<<<< , ]
+H >>>> [ <<<<-->>>> , ] <<<<
+[ >^H>H<^>H<H^>^H>H<^>H<H^>^H>H<^>H<H^ <<+>+>+>+ <<<< ]
+H .

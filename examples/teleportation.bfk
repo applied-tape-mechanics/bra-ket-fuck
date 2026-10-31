@@ -1,0 +1,5 @@
+# |BF> Example 3: Quantum Teleportation Protocol (Profile D Dynamic Feed-Forward)
+# Qubits: 3 (q0 = payload |1⟩ prepared via +, q1..q2 = shared Bell pair)
+# Teleports |ψ⟩ from q0 to q2 using mid-circuit measurement and classical feed-forward
+
++>H^<^H.>. [>+<+] < [>>Z<<+] >>.

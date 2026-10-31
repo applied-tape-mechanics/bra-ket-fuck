@@ -1,0 +1,1802 @@
+/* ==========================================================================
+   BFF Theme - Multi-Theme Design System & UI Kit
+   Themes:
+   - "os9": OS 9 (Default)
+   - "osx": OS X (Aluminium & Aurora)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap');
+
+/* ==========================================================================
+   THEME 1: OS 9 (Default)
+   ========================================================================== */
+:root,
+[data-theme="os9"] {
+  --bg-desktop: #666699;
+  --bg-stipple: #4d4d7a;
+  
+  --window-bg: #dddddd;
+  --window-border: #000000;
+  --window-bevel-light: #ffffff;
+  --window-bevel-dark: #888888;
+  --window-shadow: 3px 3px 0 rgba(0, 0, 0, 0.45);
+  
+  --inset-bg: #dddddd;
+  --inset-border: #888888;
+  --inset-bevel-dark: #888888;
+  --inset-bevel-light: #ffffff;
+  
+  --accent: #224488;
+  --text: #000000;
+  --text-muted: #444444;
+  --code-bg: #ffffff;
+  --code-text: #000000;
+  
+  --font-system: "Charcoal", "Geneva", "Lucida Grande", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "Monaco", "Courier New", "JetBrains Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg-desktop) radial-gradient(var(--bg-stipple) 1px, transparent 0) 0 0 / 2px 2px;
+  background-attachment: fixed;
+  color: var(--text);
+  font: 12px var(--font-system);
+  min-height: 100vh;
+  margin: 0;
+  padding: 24px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.3s ease;
+}
+
+/* Layout Container */
+.bff-container, .container {
+  width: 100%;
+  max-width: 1040px;
+}
+
+/* Top Bar & Floating Actions */
+.bff-top-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bff-swagger-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(to bottom, #ffffff 0%, #dddddd 45%, #bbbbbb 100%);
+  border: 1px solid #000000;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #888888, 1px 1px 0 rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
+  padding: 2px 10px;
+  font: bold 11px var(--font-system);
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.bff-swagger-link:hover {
+  background: #eeeeee;
+  color: #000000;
+}
+
+.bff-swagger-link:active {
+  background: #999999;
+  box-shadow: inset 1px 1px 2px #444444;
+}
+
+.bff-static-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #dddddd;
+  border: 1px solid #888888;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #888888;
+  border-radius: 3px;
+  padding: 2px 8px;
+  font: bold 11px var(--font-system);
+  color: #333333;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.bff-swagger-dot {
+  width: 7px;
+  height: 7px;
+  background: #22aa44;
+  border: 1px solid #000000;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 5px #22aa44;
+}
+
+/* Header */
+.bff-header, header {
+  margin-bottom: 16px;
+  text-align: center;
+  position: relative;
+}
+
+/* Theme Switcher Widget */
+.bff-theme-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--window-bg);
+  border: 1px solid var(--window-border);
+  box-shadow: inset 1px 1px 0 var(--window-bevel-light), inset -1px -1px 0 var(--window-bevel-dark);
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-bottom: 8px;
+}
+
+.bff-theme-select,
+.bff-select {
+  background: #ffffff;
+  border: 1px solid #888888;
+  color: #000000;
+  font: bold 11px var(--font-system);
+  padding: 2px 6px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.badge-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #dddddd;
+  border: 1px solid #888888;
+  box-shadow: inset 1px 1px 0 #888888, 1px 1px 0 #ffffff;
+  padding: 3px 12px;
+  font-size: 11px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 8px;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: #33aa55;
+  border: 1px solid #000000;
+  box-shadow: inset 1px 1px 0 #99ffbb;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+h1 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 4px 0;
+  color: #ffffff;
+  text-shadow: 1px 1px 0 #000000, -1px -1px 0 #333344, 1px -1px 0 #333344, -1px 1px 0 #333344;
+  letter-spacing: -0.01em;
+}
+
+p.subtitle {
+  color: #eaeaff;
+  font-size: 12px;
+  margin: 0;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+}
+
+/* Folder Tabs (OS 9 Control Strip / Finder Tabs) */
+.mode-tabs {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+.mode-tab {
+  background: #bbbbbb;
+  border: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  border-radius: 4px 4px 0 0;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px 0 0 #888888;
+  color: #333333;
+  padding: 4px 14px;
+  font: bold 12px var(--font-system);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  top: 1px;
+}
+
+.mode-tab:hover {
+  background: #cccccc;
+  color: #000000;
+}
+
+.mode-tab.active {
+  background: #dddddd;
+  color: #000000;
+  border-bottom: 1px solid #dddddd;
+  padding-top: 5px;
+  top: 2px;
+  z-index: 3;
+}
+
+.mode-tab-accent {
+  background: #b0c4de;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px 0 0 #778899;
+}
+
+.mode-tab-accent:hover {
+  background: #c0d4ee;
+}
+
+/* Two Column Window Grid */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 860px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* OS 9 Window (.window and .card) */
+.window, .card {
+  background: var(--window-bg);
+  border: 1px solid var(--window-border);
+  box-shadow: inset 1px 1px 0 var(--window-bevel-light), inset -1px -1px 0 var(--window-bevel-dark), var(--window-shadow);
+  padding: 3px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Window Striped Title Bar */
+.title-bar, .card-header {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 3px;
+  background: repeating-linear-gradient(
+    to bottom,
+    #dddddd 0px,
+    #dddddd 1px,
+    #ffffff 1px,
+    #ffffff 2px,
+    #999999 2px,
+    #999999 3px
+  );
+  border-top: 1px solid #ffffff;
+  border-bottom: 1px solid #888888;
+  user-select: none;
+}
+
+/* Square Close Box */
+.close-box, .card-header::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  width: 11px;
+  height: 11px;
+  background: #cccccc;
+  border: 1px solid #000000;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #777777;
+  cursor: pointer;
+  z-index: 2;
+}
+
+/* Title text masked with window background */
+.title-text, .card-title {
+  background: #dddddd;
+  padding: 0 8px;
+  font-weight: bold;
+  font-size: 12px;
+  color: #000000;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Double Beveled Inset Content Box */
+.content, .card-body-box {
+  background: var(--inset-bg);
+  border: 1px solid var(--inset-border);
+  box-shadow: inset 1px 1px 0 var(--inset-bevel-dark), 1px 1px 0 var(--inset-bevel-light);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Card direct content wrapper */
+.card > *:not(.card-header) {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.card > .card-header + * {
+  margin-top: 8px;
+}
+
+/* Presets Bar */
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.presets-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: bold;
+  margin-right: 2px;
+}
+
+.preset-btn {
+  background: linear-gradient(to bottom, #ffffff 0%, #dddddd 45%, #bbbbbb 100%);
+  border: 1px solid #000000;
+  border-radius: 3px;
+  padding: 2px 8px;
+  font: bold 11px var(--font-system);
+  color: #000000;
+  cursor: pointer;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #888888;
+}
+
+.preset-btn:hover {
+  background: linear-gradient(to bottom, #ffffff 0%, #eaeaea 45%, #cccccc 100%);
+}
+
+.preset-btn:active {
+  background: #999999;
+  box-shadow: inset 1px 1px 2px #444444;
+}
+
+/* Inset Textareas & Output Views */
+textarea {
+  width: 100%;
+  height: 240px;
+  background: var(--code-bg);
+  color: var(--code-text);
+  border: 1px solid #888888;
+  box-shadow: inset 1px 1px 0 #888888, 1px 1px 0 #ffffff;
+  font: 12px var(--font-mono);
+  padding: 8px;
+  resize: vertical;
+  line-height: 1.45;
+  outline: none;
+}
+
+textarea:focus {
+  border-color: #000000;
+  outline: 1px solid #4d4d7a;
+}
+
+pre.output-view {
+  width: 100%;
+  height: 240px;
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #888888;
+  box-shadow: inset 1px 1px 0 #888888, 1px 1px 0 #ffffff;
+  font: 12px var(--font-mono);
+  padding: 8px;
+  overflow: auto;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
+}
+
+/* OS 9 Beveled Divider */
+.divider {
+  height: 2px;
+  border-top: 1px solid #888888;
+  border-bottom: 1px solid #ffffff;
+  margin: 12px 0;
+}
+
+/* Button Row & Ring */
+.btn-row, .footer {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 6px;
+}
+
+/* Standard OS 9 Button */
+.btn {
+  background: linear-gradient(to bottom, #ffffff 0%, #dddddd 45%, #bbbbbb 100%);
+  border: 1px solid #000000;
+  border-radius: 3px;
+  padding: 3px 20px;
+  font: bold 12px var(--font-system);
+  color: #000000;
+  cursor: pointer;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #888888;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.btn:hover {
+  background: linear-gradient(to bottom, #ffffff 0%, #ececec 45%, #cccccc 100%);
+}
+
+.btn:active {
+  background: #999999;
+  box-shadow: inset 1px 1px 2px #444444;
+}
+
+/* Default Action Button with OS 9 Ring */
+.btn-ring {
+  display: inline-flex;
+  border: 2px solid #000000;
+  border-radius: 6px;
+  padding: 2px;
+  background: #bbbbbb;
+  box-shadow: inset 1px 1px 0 #888888;
+}
+
+.btn-primary {
+  box-shadow: 
+    0 0 0 2px #bbbbbb, 
+    0 0 0 4px #000000, 
+    inset 1px 1px 0 #ffffff, 
+    inset -1px -1px 0 #888888;
+  margin: 4px 6px;
+}
+
+.btn-primary:active {
+  background: #999999;
+  box-shadow: 
+    0 0 0 2px #888888, 
+    0 0 0 4px #000000, 
+    inset 1px 1px 2px #444444;
+}
+
+.btn-secondary {
+  background: linear-gradient(to bottom, #ffffff 0%, #dddddd 45%, #bbbbbb 100%);
+}
+
+.btn-danger {
+  background: linear-gradient(to bottom, #ffffff 0%, #ffdddd 45%, #ddbbbb 100%);
+  color: #880000;
+}
+
+.btn-danger:active {
+  background: #bb8888;
+  color: #ffffff;
+}
+
+/* Status Bar & Pills */
+.stats-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 11px;
+  color: #444444;
+  border-top: 1px solid #888888;
+  border-bottom: 1px solid #ffffff;
+  padding: 4px 0;
+}
+
+.stat-pill {
+  font-size: 11px;
+  color: #444444;
+}
+
+.stat-pill span, .status {
+  color: #000000;
+  font-weight: bold;
+}
+
+/* Modal Alert Window */
+.modal-backdrop {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+}
+
+.modal-backdrop.active {
+  display: flex;
+}
+
+.modal-box {
+  background: var(--window-bg);
+  border: 1px solid var(--window-border);
+  box-shadow: inset 1px 1px 0 var(--window-bevel-light), inset -1px -1px 0 var(--window-bevel-dark), 4px 5px 0 rgba(0,0,0,0.5);
+  padding: 3px;
+  width: 100%;
+  max-width: 860px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 3px;
+  background: repeating-linear-gradient(
+    to bottom,
+    #dddddd 0px,
+    #dddddd 1px,
+    #ffffff 1px,
+    #ffffff 2px,
+    #999999 2px,
+    #999999 3px
+  );
+  border-top: 1px solid #ffffff;
+  border-bottom: 1px solid #888888;
+}
+
+.modal-title {
+  background: #dddddd;
+  padding: 0 8px;
+  font-weight: bold;
+  font-size: 12px;
+  color: #000000;
+  z-index: 1;
+}
+
+.close-btn {
+  position: absolute;
+  left: 5px;
+  width: 11px;
+  height: 11px;
+  background: #cccccc;
+  border: 1px solid #000000;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #777777;
+  cursor: pointer;
+  z-index: 2;
+  padding: 0;
+}
+
+.close-btn:active {
+  background: #999999;
+  box-shadow: inset 1px 1px 0 #777777, inset -1px -1px 0 #ffffff;
+}
+
+.modal-body {
+  background: var(--inset-bg);
+  border: 1px solid var(--inset-border);
+  box-shadow: inset 1px 1px 0 var(--inset-bevel-dark), 1px 1px 0 var(--inset-bevel-light);
+  padding: 16px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-subtabs {
+  display: flex;
+  gap: 4px;
+}
+
+.modal-tab {
+  background: #bbbbbb;
+  border: 1px solid #000000;
+  border-radius: 3px;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #888888;
+  color: #000000;
+  padding: 2px 10px;
+  font: bold 11px var(--font-system);
+  cursor: pointer;
+}
+
+.modal-tab.active {
+  background: #ffffff;
+  border-color: #000000;
+  box-shadow: inset 1px 1px 0 #888888;
+}
+
+.bf-code-box {
+  width: 100%;
+  height: 320px;
+  background: #ffffff;
+  border: 1px solid #888888;
+  box-shadow: inset 1px 1px 0 #888888, 1px 1px 0 #ffffff;
+  color: #000000;
+  font: 12px var(--font-mono);
+  padding: 8px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.bf-code-box.nowrap {
+  white-space: pre;
+  word-break: normal;
+}
+
+.op-stat-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: 11px;
+}
+
+.op-chip {
+  background: #eeeeee;
+  padding: 2px 6px;
+  border: 1px solid #888888;
+  border-radius: 2px;
+  color: #000000;
+  font: 11px var(--font-mono);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.modal-actions-left {
+  display: flex;
+  gap: 4px;
+}
+
+/* Toast (OS 9 Help Balloon) */
+.bff-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #ffffcc;
+  color: #000000;
+  border: 1px solid #000000;
+  border-radius: 3px;
+  box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.45);
+  padding: 6px 14px;
+  font: bold 11px var(--font-system);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 2000;
+}
+
+/* OS 9 Scrollbars */
+::-webkit-scrollbar {
+  width: 15px;
+  height: 15px;
+}
+
+::-webkit-scrollbar-track {
+  background: repeating-linear-gradient(
+    45deg,
+    #dddddd,
+    #dddddd 2px,
+    #ffffff 2px,
+    #ffffff 4px
+  );
+  border-left: 1px solid #888888;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cccccc;
+  border: 1px solid #000000;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #777777;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #999999;
+}
+
+
+/* ==========================================================================
+   THEME 2: OS X (Aluminium & Cosmic Aurora)
+   ========================================================================== */
+[data-theme="osx"] {
+  --bg-desktop: #080f1e;
+  --window-bg: #e6e6e6;
+  --window-border: #6d6d6d;
+  --window-shadow: 0 18px 45px rgba(0, 0, 0, 0.65), 0 2px 8px rgba(0, 0, 0, 0.4);
+  
+  --inset-bg: #f5f5f5;
+  --inset-border: #bbbbbb;
+  --text: #222222;
+  --text-muted: #666666;
+  
+  --font-system: "Lucida Grande", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+[data-theme="osx"] body {
+  /* OS X Aurora Wallpaper Gradient */
+  background: 
+    radial-gradient(ellipse at 50% 15%, rgba(100, 155, 230, 0.38) 0%, transparent 60%),
+    radial-gradient(ellipse at 85% 75%, rgba(170, 75, 215, 0.28) 0%, transparent 50%),
+    radial-gradient(ellipse at 15% 85%, rgba(45, 110, 200, 0.32) 0%, transparent 50%),
+    linear-gradient(180deg, #182845 0%, #0c1527 60%, #050a14 100%);
+  background-attachment: fixed;
+  font: 12px var(--font-system);
+  color: #222222;
+}
+
+[data-theme="osx"] h1 {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 700;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
+  letter-spacing: -0.01em;
+}
+
+[data-theme="osx"] p.subtitle {
+  color: #c7d8f5;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="osx"] .badge-bar {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  color: #ffffff;
+  border-radius: 9999px;
+  padding: 3px 14px;
+}
+
+[data-theme="osx"] .pulse-dot {
+  background: #34c759;
+  border: none;
+  box-shadow: 0 0 8px #34c759;
+}
+
+[data-theme="osx"] .bff-swagger-link {
+  background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 50%, #e0e0e0 51%, #d5d5d5 100%);
+  border: 1px solid #8e8e8e;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 1px 0 #ffffff;
+  color: #222222;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  padding: 3px 12px;
+}
+
+[data-theme="osx"] .bff-swagger-link:hover {
+  background: linear-gradient(to bottom, #ffffff 0%, #f6f6f6 50%, #eaeaea 51%, #e0e0e0 100%);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25), inset 0 1px 0 #ffffff;
+}
+
+[data-theme="osx"] .bff-swagger-link:active {
+  background: linear-gradient(to bottom, #b0b0b0 0%, #c0c0c0 100%);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="osx"] .bff-static-badge {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 12px;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  padding: 3px 10px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+[data-theme="osx"] .bff-swagger-dot {
+  border: none;
+  box-shadow: 0 0 6px #34c759;
+}
+
+/* osx Unified Aluminium Window */
+[data-theme="osx"] .window,
+[data-theme="osx"] .card {
+  background: #e4e4e4;
+  border: 1px solid #737373;
+  border-radius: 6px 6px 4px 4px;
+  box-shadow: var(--window-shadow);
+  padding: 0;
+  overflow: hidden;
+}
+
+/* osx Title Bar */
+[data-theme="osx"] .title-bar,
+[data-theme="osx"] .card-header {
+  height: 28px;
+  background: linear-gradient(to bottom, #ebebeb 0%, #d8d8d8 50%, #c5c5c5 51%, #bcbcbc 100%);
+  border-top: 1px solid #f8f8f8;
+  border-bottom: 1px solid #8e8e8e;
+  margin: 0;
+}
+
+/* Traffic Light Dots on Top-Left */
+[data-theme="osx"] .close-box,
+[data-theme="osx"] .card-header::before {
+  left: 10px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 4px 4px, #ff827a 0%, #ff544d 60%, #e0443e 100%);
+  border: 1px solid #bf332c;
+  box-shadow: 
+    18px 0 0 0 #ffbd2e,
+    18px 0 0 1px #dea123,
+    36px 0 0 0 #28ca42,
+    36px 0 0 1px #1aac2f;
+}
+
+[data-theme="osx"] .title-text,
+[data-theme="osx"] .card-title {
+  background: transparent;
+  color: #3b3b3b;
+  font-size: 13px;
+  font-weight: bold;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
+  border: none;
+  padding: 0;
+}
+
+/* osx Inset Content Box */
+[data-theme="osx"] .content,
+[data-theme="osx"] .card-body-box {
+  background: #f2f2f2;
+  border: none;
+  border-top: 1px solid #ffffff;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+  padding: 16px;
+}
+
+[data-theme="osx"] .card > *:not(.card-header) {
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+[data-theme="osx"] .card > .card-header + * {
+  margin-top: 12px;
+}
+
+/* osx Segmented Control Tabs */
+[data-theme="osx"] .mode-tabs {
+  background: linear-gradient(to bottom, #dcdcdc 0%, #c4c4c4 100%);
+  border: 1px solid #8e8e8e;
+  border-radius: 5px;
+  padding: 2px;
+  display: inline-flex;
+  gap: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  margin-bottom: 12px;
+}
+
+[data-theme="osx"] .mode-tab {
+  background: transparent;
+  border: none;
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+  color: #333333;
+  padding: 4px 16px;
+  font: bold 12px var(--font-system);
+  box-shadow: none;
+  top: 0;
+}
+
+[data-theme="osx"] .mode-tab:last-child {
+  border-right: none;
+}
+
+[data-theme="osx"] .mode-tab.active {
+  background: linear-gradient(to bottom, #6d6d6d 0%, #878787 100%);
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.45);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+  top: 0;
+  padding-top: 4px;
+}
+
+/* osx Buttons */
+[data-theme="osx"] .btn {
+  background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 50%, #e0e0e0 51%, #d5d5d5 100%);
+  border: 1px solid #8e8e8e;
+  border-radius: 4px;
+  color: #222222;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 1px 0 #ffffff;
+  padding: 4px 18px;
+}
+
+[data-theme="osx"] .btn:hover {
+  background: linear-gradient(to bottom, #ffffff 0%, #f6f6f6 50%, #eaeaea 51%, #e0e0e0 100%);
+}
+
+[data-theme="osx"] .btn:active {
+  background: linear-gradient(to bottom, #b0b0b0 0%, #c0c0c0 100%);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+/* osx Default Action Button (OS X Blue Gloss) */
+[data-theme="osx"] .btn-primary,
+[data-theme="osx"] .btn-ring > .btn {
+  background: linear-gradient(to bottom, #6cb2f2 0%, #368ee8 48%, #1f77dd 50%, #1562c6 100%);
+  border: 1px solid #1454a8;
+  border-radius: 4px;
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.45);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+[data-theme="osx"] .btn-primary:hover,
+[data-theme="osx"] .btn-ring > .btn:hover {
+  background: linear-gradient(to bottom, #7cc0f8 0%, #469cf2 48%, #2983ea 50%, #1a6ed6 100%);
+}
+
+[data-theme="osx"] .btn-primary:active,
+[data-theme="osx"] .btn-ring > .btn:active {
+  background: linear-gradient(to bottom, #1455a8 0%, #1c6ed2 100%);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="osx"] .btn-ring {
+  border: none;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+}
+
+[data-theme="osx"] .preset-btn {
+  background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 50%, #e0e0e0 51%, #d5d5d5 100%);
+  border: 1px solid #8e8e8e;
+  border-radius: 3px;
+  color: #222222;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.1), inset 0 1px 0 #fff;
+  padding: 2px 9px;
+}
+
+/* osx Inset Textareas & Output */
+[data-theme="osx"] textarea,
+[data-theme="osx"] pre.output-view,
+[data-theme="osx"] .bf-code-box {
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid #999999;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
+  font: 12px var(--font-mono);
+  padding: 8px 10px;
+}
+
+[data-theme="osx"] textarea:focus {
+  border-color: #6892cc;
+  box-shadow: 0 0 0 3px rgba(104, 146, 204, 0.4), inset 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+/* osx Modal Sheet */
+[data-theme="osx"] .modal-backdrop {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+[data-theme="osx"] .modal-box {
+  background: #e6e6e6;
+  border: 1px solid #8e8e8e;
+  border-radius: 8px 8px 6px 6px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
+  padding: 0;
+  overflow: hidden;
+}
+
+[data-theme="osx"] .modal-header {
+  height: 28px;
+  background: linear-gradient(to bottom, #ebebeb 0%, #d8d8d8 50%, #c5c5c5 51%, #bcbcbc 100%);
+  border-top: 1px solid #f8f8f8;
+  border-bottom: 1px solid #8e8e8e;
+}
+
+[data-theme="osx"] .close-btn {
+  left: 10px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 4px 4px, #ff827a 0%, #ff544d 60%, #e0443e 100%);
+  border: 1px solid #bf332c;
+  box-shadow: 
+    18px 0 0 0 #ffbd2e,
+    18px 0 0 1px #dea123,
+    36px 0 0 0 #28ca42,
+    36px 0 0 1px #1aac2f;
+}
+
+[data-theme="osx"] .modal-title {
+  background: transparent;
+  color: #333333;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+[data-theme="osx"] .modal-body {
+  background: #f2f2f2;
+  border: none;
+  box-shadow: none;
+  padding: 16px;
+}
+
+/* osx Floating HUD Notification / Toast */
+[data-theme="osx"] .bff-toast {
+  background: rgba(28, 28, 30, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+}
+
+/* osx Sleek Scrollbars */
+[data-theme="osx"] ::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+[data-theme="osx"] ::-webkit-scrollbar-track {
+  background: #e8e8e8;
+  border-left: 1px solid #d0d0d0;
+}
+
+[data-theme="osx"] ::-webkit-scrollbar-thumb {
+  background: #bababa;
+  border: 3px solid #e8e8e8;
+  border-radius: 7px;
+  box-shadow: none;
+}
+
+[data-theme="osx"] ::-webkit-scrollbar-thumb:active {
+  background: #888888;
+}
+
+
+/* ==========================================================================
+   |BF> Quantum Visualizer & Responsive Table Extensions (OS 9 & osx)
+   ========================================================================== */
+
+.qtape-section {
+  margin-bottom: 12px;
+}
+
+.qtape-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(115px, 1fr));
+  gap: 8px;
+  padding: 8px;
+  background: #ffffff;
+  border: 1px solid #888888;
+  box-shadow: inset 1px 1px 0 #888888, 1px 1px 0 #ffffff;
+}
+
+.qtape-cell {
+  background: #eeeeee;
+  border: 1px solid #000000;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #999999;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+.qtape-cell.active-head {
+  background: #eef2ff;
+  border: 2px solid #000080;
+  box-shadow: 1px 1px 0 #000000;
+}
+
+.qtape-head-badge {
+  font: bold 10px var(--font-system);
+  background: #000080;
+  color: #ffffff;
+  padding: 1px 5px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.qtape-cell-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font: bold 11px var(--font-mono);
+}
+
+.qtape-meter {
+  height: 10px;
+  background: #dddddd;
+  border: 1px solid #666666;
+  position: relative;
+  overflow: hidden;
+}
+
+.qtape-meter-fill {
+  height: 100%;
+  width: calc(var(--p1, 0) * 1%);
+  background: #000080;
+  transition: width 0.2s ease;
+}
+
+.qtape-meta {
+  display: flex;
+  justify-content: space-between;
+  font: 10px var(--font-mono);
+  color: #333333;
+}
+
+/* Responsive Data Table (Sticky Header & First Column) */
+.table-wrapper {
+  overflow-x: auto;
+  max-width: 100%;
+  max-height: 290px;
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid #888888;
+  box-shadow: inset 1px 1px 0 #888888, 1px 1px 0 #ffffff;
+}
+
+.table-wrapper:focus-visible {
+  outline: 2px solid #000080;
+  outline-offset: 1px;
+}
+
+.table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-wrapper caption {
+  text-align: left;
+  padding: 6px 8px;
+  font: bold 11px var(--font-system);
+  background: #efefef;
+  border-bottom: 1px solid #888888;
+  color: #000000;
+}
+
+.table-wrapper th,
+.table-wrapper td {
+  padding: 0.45rem 0.65rem;
+  text-align: left;
+  border-bottom: 1px solid #dddddd;
+  font: 11px var(--font-mono);
+  white-space: nowrap;
+}
+
+.table-wrapper thead th {
+  position: sticky;
+  top: 0;
+  background: #cccccc;
+  color: #000000;
+  font: bold 11px var(--font-system);
+  border-bottom: 1px solid #000000;
+  z-index: 2;
+}
+
+.table-wrapper tbody th {
+  position: sticky;
+  left: 0;
+  background: #f7f7f7;
+  color: #000000;
+  font: bold 11px var(--font-mono);
+  border-right: 1px solid #cccccc;
+  z-index: 1;
+}
+
+.table-wrapper thead th:first-child {
+  left: 0;
+  z-index: 3;
+}
+
+.prob-bar-track {
+  width: 110px;
+  height: 10px;
+  background: #e6e6e6;
+  border: 1px solid #777777;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+.prob-bar-fill {
+  height: 100%;
+  width: calc(var(--prob, 0) * 1%);
+  background: #000080;
+}
+
+.shor-banner {
+  background: #f5f7ff;
+  border: 1px solid #000080;
+  padding: 8px 10px;
+  margin-top: 10px;
+  font: 11px var(--font-system);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.shor-badge-ok {
+  background: #008000;
+  color: #ffffff;
+  font: bold 11px var(--font-mono);
+  padding: 2px 7px;
+  border-radius: 2px;
+}
+
+.paper-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.paper-card {
+  background: #ffffff;
+  border: 1px solid #000000;
+  box-shadow: inset 1px 1px 0 #ffffff, 1px 1px 0 #888888;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.paper-card h3 {
+  margin: 0;
+  font: bold 13px var(--font-system);
+  color: #000080;
+}
+
+.paper-card p {
+  margin: 0;
+  font: 11px var(--font-system);
+  color: #333333;
+  line-height: 1.45;
+}
+
+.paper-links {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+/* osx Overrides for Quantum Visualizer */
+[data-theme="osx"] .qtape-strip,
+[data-theme="osx"] .table-wrapper {
+  border: 1px solid #999999;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="osx"] .qtape-cell {
+  background: linear-gradient(to bottom, #ffffff 0%, #f2f2f2 100%);
+  border: 1px solid #a0a0a0;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="osx"] .qtape-cell.active-head {
+  background: linear-gradient(to bottom, #f0f7ff 0%, #dcebff 100%);
+  border: 1px solid #1f77dd;
+  box-shadow: 0 0 0 2px rgba(31, 119, 221, 0.25);
+}
+
+[data-theme="osx"] .qtape-head-badge,
+[data-theme="osx"] .qtape-meter-fill,
+[data-theme="osx"] .prob-bar-fill {
+  background: linear-gradient(to bottom, #469cf2 0%, #1562c6 100%);
+}
+
+[data-theme="osx"] .table-wrapper thead th {
+  background: linear-gradient(to bottom, #ebebeb 0%, #d5d5d5 100%);
+  border-bottom: 1px solid #8e8e8e;
+  color: #222222;
+}
+
+[data-theme="osx"] .shor-banner {
+  background: #edf5ff;
+  border: 1px solid #368ee8;
+  border-radius: 4px;
+}
+
+[data-theme="osx"] .paper-card {
+  border: 1px solid #999999;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ==========================================================================
+   Window Top Controls, Tab Panel Heights & Window Footer Bar (OS 9 & osx)
+   ========================================================================== */
+
+/* Window Top Bar: Tabs & Controls Header */
+.window-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.window-top-bar .mode-tabs {
+  margin-bottom: 0;
+}
+
+.window-top-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.window-top-controls .bff-theme-picker {
+  margin-bottom: 0;
+}
+
+/* Tab Panels */
+.tab-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-panel[hidden] {
+  display: none !important;
+}
+
+/* OpenQASM Code Box: Comfortable tall height matching Tab 3 with scrollbars */
+.qasm-full-box {
+  width: 100%;
+  height: 560px;
+  min-height: 500px;
+  background: #ffffff;
+  border: 1px solid #888888;
+  box-shadow: inset 1px 1px 0 #888888, 1px 1px 0 #ffffff;
+  color: #000000;
+  font: 12px var(--font-mono);
+  padding: 8px;
+  overflow: auto;
+  white-space: pre;
+  word-break: normal;
+  margin: 0;
+}
+
+/* ISA Table Wrapper: Fully expanded so all 12 instructions and papers render without vertical scrolling */
+.isa-table-wrapper {
+  max-height: none;
+  overflow-y: visible;
+  margin-top: 10px;
+}
+
+/* osx Overrides for Window Top Controls */
+[data-theme="osx"] .window-top-controls .bff-static-badge {
+  background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 50%, #e0e0e0 51%, #d5d5d5 100%);
+  border: 1px solid #8e8e8e;
+  border-radius: 12px;
+  color: #222222;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  padding: 3px 10px;
+}
+
+[data-theme="osx"] .window-top-controls .bff-theme-picker {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: #333333;
+}
+
+.window-footer {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #888888;
+  box-shadow: inset 0 1px 0 #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font: 11px var(--font-system);
+  color: #222222;
+}
+
+.window-footer-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.window-footer-links a,
+.window-footer-links a:visited {
+  color: #000080;
+  font-weight: bold;
+  text-decoration: none;
+  background: #eeeeee;
+  border: 1px solid #888888;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #aaaaaa;
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+
+.window-footer-links a:hover {
+  background: #ffffff;
+  border-color: #000000;
+  text-decoration: underline;
+}
+
+.window-footer-links a:active {
+  background: #cccccc;
+  box-shadow: inset 1px 1px 1px #666666;
+}
+
+[data-theme="osx"] .window-footer {
+  border-top: 1px solid #cccccc;
+  box-shadow: inset 0 1px 0 #ffffff;
+  color: #333333;
+}
+
+[data-theme="osx"] .window-footer-links a,
+[data-theme="osx"] .window-footer-links a:visited {
+  background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 50%, #e0e0e0 51%, #d5d5d5 100%);
+  border: 1px solid #8e8e8e;
+  border-radius: 4px;
+  color: #1562c6;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), inset 0 1px 0 #ffffff;
+  padding: 2px 10px;
+}
+
+[data-theme="osx"] .window-footer-links a:hover {
+  background: linear-gradient(to bottom, #ffffff 0%, #f6f6f6 50%, #eaeaea 51%, #e0e0e0 100%);
+  color: #0d4a9e;
+  text-decoration: none;
+}
+
+
+/* ==========================================================================
+   Interactive Quantum Distribution Column Chart (OS 9 & osx)
+   ========================================================================== */
+
+.dist-view-toggles {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.dist-toggle-btn.active {
+  background: #000080;
+  color: #ffffff;
+  border-color: #000000;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="osx"] .dist-toggle-btn.active {
+  background: linear-gradient(to bottom, #469cf2 0%, #1562c6 100%);
+  color: #ffffff;
+  border-color: #1454a8;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Ensure only one measurement visualization is visible at a time */
+.qchart-container[hidden],
+.qtrace-container[hidden],
+.table-wrapper[hidden],
+[hidden] {
+  display: none !important;
+}
+
+.qchart-container {
+  height: 290px;
+  background: #ffffff;
+  border: 1px solid #888888;
+  box-shadow: inset 1px 1px 0 #888888, 1px 1px 0 #ffffff;
+  display: flex;
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 10px 10px 8px 36px;
+  box-sizing: border-box;
+}
+
+/* Y-Axis Scale Markers */
+.qchart-y-axis {
+  position: absolute;
+  left: 4px;
+  top: 10px;
+  bottom: 34px;
+  width: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  font: 9px var(--font-mono);
+  color: #666666;
+  pointer-events: none;
+  user-select: none;
+}
+
+.qchart-grid-lines {
+  position: absolute;
+  left: 36px;
+  right: 10px;
+  top: 10px;
+  bottom: 34px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.qchart-grid-line {
+  border-top: 1px dashed #e0e0e0;
+  width: 100%;
+}
+
+.qchart-stage {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  min-width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.qchart-col {
+  flex: 1 0 54px;
+  max-width: 90px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+}
+
+.qchart-val {
+  font: bold 10px var(--font-mono);
+  color: #000000;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.qchart-val-count {
+  font: 9px var(--font-mono);
+  color: #555555;
+  font-weight: normal;
+  display: block;
+}
+
+.qchart-bar-slot {
+  width: 100%;
+  max-width: 44px;
+  height: calc(100% - 48px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.qchart-bar {
+  width: 100%;
+  height: calc(var(--bar-h, 0) * 1%);
+  min-height: 2px;
+  background: #000080;
+  border: 1px solid #000000;
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.6), inset -1px -1px 0 rgba(0, 0, 0, 0.4);
+  transition: height 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+  cursor: pointer;
+  border-radius: 2px 2px 0 0;
+}
+
+.qchart-bar.bar-factoring {
+  background: #008000;
+  box-shadow: inset 1px 1px 0 #a3f7a3, inset -1px -1px 0 #004d00, 0 0 4px rgba(0, 128, 0, 0.4);
+}
+
+.qchart-bar.bar-partial {
+  background: #0066cc;
+  box-shadow: inset 1px 1px 0 #99ccff, inset -1px -1px 0 #003366;
+}
+
+.qchart-bar.bar-trivial {
+  background: #888888;
+  box-shadow: inset 1px 1px 0 #cccccc, inset -1px -1px 0 #444444;
+}
+
+.qchart-col-label {
+  margin-top: 6px;
+  font: bold 11px var(--font-mono);
+  color: #000000;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.qchart-col-sub {
+  font: 9px var(--font-system);
+  color: #555555;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.qchart-col-sub.is-factor {
+  color: #008000;
+  font-weight: bold;
+}
+
+/* osx Mode Overrides for Column Chart */
+[data-theme="osx"] .qchart-container {
+  background: #ffffff;
+  border: 1px solid #999999;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="osx"] .qchart-bar {
+  background: linear-gradient(to bottom, #5ba4f5 0%, #2983ea 50%, #1562c6 100%);
+  border: 1px solid #1454a8;
+  border-radius: 3px 3px 0 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="osx"] .qchart-bar.bar-factoring {
+  background: linear-gradient(to bottom, #5cd67b 0%, #34c759 50%, #1eaa3b 100%);
+  border: 1px solid #188630;
+  box-shadow: 0 0 6px rgba(52, 199, 89, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="osx"] .qchart-bar.bar-partial {
+  background: linear-gradient(to bottom, #4ed2f8 0%, #0099cc 50%, #007399 100%);
+  border: 1px solid #005c80;
+}
+
+[data-theme="osx"] .qchart-bar.bar-trivial {
+  background: linear-gradient(to bottom, #b0b0b0 0%, #888888 100%);
+  border: 1px solid #666666;
+}
+
+[data-theme="osx"] .qchart-col-sub.is-factor {
+  color: #1aac2f;
+}
+
+
+/* ==========================================================================
+   Shot-by-Shot Convergence Trace Line Graph (OS 9 & osx)
+   ========================================================================== */
+
+.qtrace-container {
+  height: 290px;
+  background: #ffffff;
+  border: 1px solid #888888;
+  box-shadow: inset 1px 1px 0 #888888, 1px 1px 0 #ffffff;
+  display: flex;
+  flex-direction: column;
+  padding: 6px 10px 8px 10px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.qtrace-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font: 10px var(--font-mono);
+  color: #333333;
+  margin-bottom: 4px;
+  padding: 2px 4px;
+  background: #f4f4f4;
+  border: 1px solid #cccccc;
+  border-radius: 2px;
+}
+
+.qtrace-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.qtrace-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.qtrace-canvas-wrap {
+  flex: 1;
+  width: 100%;
+  position: relative;
+  min-height: 0;
+}
+
+#qtraceCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+}
+
+.qtrace-tooltip {
+  position: absolute;
+  background: #ffffcc;
+  color: #000000;
+  border: 1px solid #000000;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+  padding: 5px 8px;
+  font: 10px var(--font-mono);
+  pointer-events: none;
+  z-index: 20;
+  border-radius: 2px;
+  white-space: nowrap;
+  line-height: 1.35;
+}
+
+.qtrace-empty-notice {
+  margin: auto;
+  font: 11px var(--font-system);
+  color: var(--text-muted);
+  text-align: center;
+  padding: 20px;
+}
+
+/* osx Mode Overrides for Shot Trace */
+[data-theme="osx"] .qtrace-container {
+  background: #ffffff;
+  border: 1px solid #999999;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="osx"] .qtrace-legend {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid #d0d0d0;
+  border-radius: 4px;
+  color: #222222;
+}
+
+[data-theme="osx"] .qtrace-tooltip {
+  background: rgba(28, 28, 30, 0.9);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 4px;
+}

@@ -1,0 +1,5 @@
+# |BF> Example 2: Tripartite GHZ State |GHZ_3⟩ = (|000⟩ + |111⟩) / √2
+# Qubits: 3 (initialized to |000⟩)
+# Expected output stream: "000" (50%) or "111" (50%)
+
+H^>^<.>.>.

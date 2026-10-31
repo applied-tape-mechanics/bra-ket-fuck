@@ -1,0 +1,27 @@
+services:
+  bra-ket-fuck:
+    image: ghcr.io/applied-tape-mechanics/bra-ket-fuck:latest
+    build:
+      context: .
+      target: production
+    container_name: bra-ket-fuck-cli
+    restart: "no"
+
+  workbench:
+    image: ghcr.io/applied-tape-mechanics/bra-ket-fuck:latest
+    build:
+      context: .
+      target: production
+    container_name: bra-ket-fuck-workbench
+    entrypoint: ["python3", "-m", "http.server", "8085", "--directory", "/app"]
+    ports:
+      - "8085:8085"
+    restart: unless-stopped
+
+  test:
+    build:
+      context: .
+      target: test
+    container_name: bra-ket-fuck-test
+    profiles:
+      - test

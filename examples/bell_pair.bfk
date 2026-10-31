@@ -1,0 +1,5 @@
+# |BF> Example 1: Bell State |Φ+⟩ = (|00⟩ + |11⟩) / √2
+# Qubits: 2 (initialized to |00⟩)
+# Expected output stream: "00" (50%) or "11" (50%)
+
+H^.>.

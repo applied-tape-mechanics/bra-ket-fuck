@@ -1,0 +1,11 @@
+# |BF> Example 6: Semiclassical 5-Qubit Recycled Shor's Algorithm (N = 15, a = 7, Profile D + C)
+# Tape: [ q_ctrl (0), y0 (1), y1 (2), y2 (3), y3 (4) ]
+# Uses Kitaev's semiclassical IPE, active reset (,), and zero-ancilla idle-target stashing on y3
+# 169 tokens | 27 native ^ tokens | 0 two-qubit QFT gates
+
+>+<
+H [ >^H>H<^>H<H^>^H>H<^>H<H^<^H>H<^>H<H^ >^H>H<^>H<H^>^H>H<^>H<H^<^H>H<^>H<H^ << ] H .
+[ >>>>+<<<< , ]
+H >>>> [ <<<<-->>>> , ] <<<<
+[ >^H>H<^>H<H^>^H>H<^>H<H^>^H>H<^>H<H^ <<+>+>+>+ <<<< ]
+H .

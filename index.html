@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="os9">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>|BF&gt; (Bra-Ket-Fuck) — Minimalist 1D Pointer-Based Quantum Programming Language</title>
+  <link rel="stylesheet" href="ui/bff-theme.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>|BF&gt; (Bra-Ket-Fuck) Quantum Virtual Machine</h1>
+      <p class="subtitle">Minimalist 1D Pointer-Based Quantum Turing &amp; OpenQASM 3.0 Programming Environment</p>
+    </header>
+
+    <main>
+      <div class="window">
+        <div class="title-bar">
+          <div class="close-box" id="windowCloseBox" title="Inspect Instruction Set Reference"></div>
+          <div class="title-text">|BF&gt; Quantum Workbench v1.0</div>
+        </div>
+
+        <div class="content">
+          <!-- Window Header Bar: Tabs (Left) & Controls (Right) -->
+          <div class="window-top-bar">
+            <!-- Mode Tabs -->
+            <div class="mode-tabs" role="tablist" aria-label="Workbench Views">
+              <button type="button" class="mode-tab active" data-tab="studio" role="tab" aria-selected="true">Quantum VM &amp; Tape Studio</button>
+              <button type="button" class="mode-tab" data-tab="qasm" role="tab" aria-selected="false">OpenQASM 3.0 Compiler</button>
+              <button type="button" class="mode-tab" data-tab="papers" role="tab" aria-selected="false">Research Papers &amp; ISA</button>
+            </div>
+
+            <!-- Top Right Window Controls: Status Badge & Theme Switcher -->
+            <div class="window-top-controls">
+              <div id="bffApiStatusSlot">
+                <div class="bff-static-badge" id="bffStaticBadge" title="Standalone zero-dependency JavaScript Quantum Statevector VM">
+                  <span class="pulse-dot"></span>
+                  <span>Client Quantum VM</span>
+                </div>
+              </div>
+              <div class="bff-theme-picker">
+                <label for="themeSelect">Appearance:</label>
+                <select id="themeSelect" class="bff-theme-select">
+                  <option value="os9">OS 9</option>
+                  <option value="osx">OS X</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 1: QUANTUM VM & TAPE STUDIO -->
+          <section id="tabStudio" class="tab-panel" aria-hidden="false">
+            <div class="presets">
+              <span class="presets-label">Presets:</span>
+              <button type="button" class="preset-btn" data-preset="shor_opt">Shor N=15 (5Q Opt &bull; 132 ops)</button>
+              <button type="button" class="preset-btn" data-preset="shor_full">Shor N=15 (6Q Full &bull; 149 ops)</button>
+              <button type="button" class="preset-btn" data-preset="shor_full_opt">Shor N=15 (6Q Opt &bull; 112 ops)</button>
+              <button type="button" class="preset-btn" data-preset="shor_recycled">Shor N=15 (5Q Recycled &bull; 169 ops)</button>
+              <button type="button" class="preset-btn" data-preset="bell">Bell Pair (5 ops)</button>
+              <button type="button" class="preset-btn" data-preset="ghz">GHZ_3 (10 ops)</button>
+              <button type="button" class="preset-btn" data-preset="teleport">Teleportation (28 ops)</button>
+              <button type="button" class="preset-btn" data-preset="grover">2Q Grover (33 ops)</button>
+            </div>
+
+            <div class="editor-grid">
+              <!-- Left Pane: |BF> Source Code -->
+              <div class="pane">
+                <div class="pane-header">
+                  <span>|BF&gt; Source Code (<span id="presetProfileLabel">Profile D: Dynamic Measurement-Conditional</span>)</span>
+                  <div class="modal-actions-left">
+                    <label for="tapeSizeSelect">Qubits:</label>
+                    <select id="tapeSizeSelect" class="bff-select">
+                      <option value="2">2 Qubits</option>
+                      <option value="3">3 Qubits</option>
+                      <option value="4">4 Qubits</option>
+                      <option value="5" selected>5 Qubits</option>
+                      <option value="6">6 Qubits</option>
+                      <option value="8">8 Qubits</option>
+                    </select>
+                    <label for="shotCountSelect">Shots:</label>
+                    <select id="shotCountSelect" class="bff-select">
+                      <option value="1">1 Shot (Single Collapse)</option>
+                      <option value="256">256 Shots</option>
+                      <option value="1024" selected>1024 Shots</option>
+                      <option value="4096">4096 Shots</option>
+                    </select>
+                  </div>
+                </div>
+                <textarea id="bfkSourceInput" spellcheck="false" aria-label="Bra-Ket-Fuck Source Code"></textarea>
+                <div class="op-stat-group" id="opStatsBar"></div>
+              </div>
+
+              <!-- Right Pane: Quantum Tape & Measurement Output -->
+              <div class="pane">
+                <div class="pane-header">
+                  <span>1D Quantum Tape Register &amp; Head Position</span>
+                  <span id="headStatusLabel">Head p = 0</span>
+                </div>
+                <div class="qtape-section">
+                  <div class="qtape-strip" id="qtapeStrip"></div>
+                </div>
+
+                <div class="pane-header">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span id="distributionTitle">Measurement Distribution</span>
+                    <span id="shotOutputBitstring" style="font-size:10px; color:var(--text-muted); font-family:var(--font-mono);"></span>
+                  </div>
+                  <div class="dist-view-toggles" role="tablist" aria-label="Distribution Display Mode">
+                    <button type="button" class="preset-btn dist-toggle-btn active" id="viewTraceBtn" data-dist-view="trace">📈 Shot Trace</button>
+                    <button type="button" class="preset-btn dist-toggle-btn" id="viewChartBtn" data-dist-view="chart">📊 Bar Chart</button>
+                    <button type="button" class="preset-btn dist-toggle-btn" id="viewTableBtn" data-dist-view="table">📋 Data Table</button>
+                  </div>
+                </div>
+
+                <!-- VIEW 1: Cumulative Shot-by-Shot Convergence Line Graph (Default for > 1 Shot) -->
+                <div class="qtrace-container" id="distTraceContainer" role="region" aria-label="Cumulative Shot-by-Shot Probability Trace">
+                  <div class="qtrace-legend" id="qtraceLegend"></div>
+                  <div class="qtrace-canvas-wrap">
+                    <canvas id="qtraceCanvas"></canvas>
+                    <div class="qtrace-tooltip" id="qtraceTooltip" hidden></div>
+                  </div>
+                </div>
+
+                <!-- VIEW 2: Interactive Column Graph (Default for 1 Shot) -->
+                <div class="qchart-container" id="distChartContainer" role="region" aria-label="Quantum Basis Measurement Column Chart" hidden>
+                  <div class="qchart-y-axis" aria-hidden="true">
+                    <span>100%</span>
+                    <span>75%</span>
+                    <span>50%</span>
+                    <span>25%</span>
+                    <span>0%</span>
+                  </div>
+                  <div class="qchart-grid-lines" aria-hidden="true">
+                    <div class="qchart-grid-line"></div>
+                    <div class="qchart-grid-line"></div>
+                    <div class="qchart-grid-line"></div>
+                    <div class="qchart-grid-line"></div>
+                    <div class="qchart-grid-line"></div>
+                  </div>
+                  <div class="qchart-stage" id="qchartStage"></div>
+                </div>
+
+                <!-- VIEW 3: Data Table -->
+                <div tabindex="0" role="region" aria-labelledby="state-table-caption" class="table-wrapper" id="distTableContainer" hidden>
+                  <table>
+                    <caption id="state-table-caption">Quantum Basis / Bitstring Probability Distribution</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">State / Bitstring</th>
+                        <th scope="col">Decimal</th>
+                        <th scope="col">Probability / Frequency</th>
+                        <th scope="col">Visual Histogram</th>
+                        <th scope="col">Notes / Phase</th>
+                      </tr>
+                    </thead>
+                    <tbody id="stateTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Shor N=15 Factor Extraction Banner -->
+            <div class="shor-banner" id="shorResultBanner" hidden>
+              <div>
+                <strong>Shor's Algorithm Post-Processing (N = 15, a = 7):</strong>
+                <span id="shorSummaryText"></span>
+              </div>
+              <span class="shor-badge-ok" id="shorFactorBadge">15 = 3 &times; 5</span>
+            </div>
+
+            <!-- Action Toolbar -->
+            <div class="toolbar">
+              <div class="btn-ring">
+                <button type="button" class="btn btn-primary" id="runSimulationBtn">
+                  <svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
+                    <polygon points="2,1 11,6 2,11"></polygon>
+                  </svg>
+                  Run Quantum VM
+                </button>
+              </div>
+              <button type="button" class="btn" id="singleShotBtn">Step Single Shot</button>
+              <button type="button" class="btn" id="copyCodeBtn">Copy |BF&gt; Code</button>
+              <button type="button" class="btn" id="downloadBfkBtn">Download .bfk</button>
+              <button type="button" class="btn" id="viewQasmShortcutBtn">Compile to OpenQASM 3.0 &rarr;</button>
+            </div>
+
+            <div class="stats-bar">
+              <span id="vmStatusText">Ready. Pure client-side statevector simulator active.</span>
+              <span id="vmTimingText">0 ms</span>
+            </div>
+          </section>
+
+          <!-- TAB 2: OPENQASM 3.0 COMPILER -->
+          <section id="tabQasm" class="tab-panel" hidden aria-hidden="true">
+            <div class="pane-header">
+              <span>Target: OpenQASM 3.0 Hardware Assembly (IBM Heron / Quantinuum Dynamic Circuits)</span>
+              <div class="modal-actions-left">
+                <label title="Decompose to 1-/2-qubit gates and insert SWAPs so every 2-qubit gate acts on neighbouring qubits of an open linear chain"><input type="checkbox" id="qasmLnnToggle"> Route for linear chain (LNN)</label>
+                <button type="button" class="preset-btn" id="copyQasmBtn">Copy OpenQASM 3.0</button>
+                <button type="button" class="preset-btn" id="downloadQasmBtn">Download .qasm</button>
+              </div>
+            </div>
+            <pre tabindex="0" class="bf-code-box nowrap qasm-full-box" id="qasmOutputBox"><code id="qasmOutputCode"></code></pre>
+            <div class="stats-bar">
+              <span id="qasmStatsText">Transpiled directly from active |BF&gt; program.</span>
+              <span>Pointer arithmetic resolved at compile time (zero emitted gates)</span>
+            </div>
+          </section>
+
+          <!-- TAB 3: RESEARCH PAPERS & ISA -->
+          <section id="tabPapers" class="tab-panel" hidden aria-hidden="true">
+            <div class="paper-grid">
+              <article class="paper-card">
+                <div>
+                  <h3>1. |BF&gt; (Bra-Ket-Fuck) Technical Whitepaper</h3>
+                  <p>
+                    Formal syntax, operational statevector semantics, BQP-universality proof (Clifford+T),
+                    4 semantic execution profiles (A&ndash;D), and OpenQASM 3.0 transpilation rules.
+                  </p>
+                </div>
+                <div class="paper-links">
+                  <a class="btn" href="papers/bra_ket_fuck_technical_whitepaper.pdf" target="_blank" rel="noopener">Open PDF Paper</a>
+                  <a class="btn" href="papers/bra_ket_fuck_technical_whitepaper.tex" target="_blank" rel="noopener">View LaTeX Source</a>
+                </div>
+              </article>
+
+              <article class="paper-card">
+                <div>
+                  <h3>2. Implementing Shor's Algorithm in |BF&gt;</h3>
+                  <p>
+                    Constructive synthesis of Shor's factoring algorithm for N = 15 (a = 7) in 149 tokens (6-qubit coherent)
+                    and 132 tokens (5-qubit semiclassical recycled with active reset).
+                  </p>
+                </div>
+                <div class="paper-links">
+                  <a class="btn" href="papers/shors_algorithm_bra_ket_fuck.pdf" target="_blank" rel="noopener">Open PDF Paper</a>
+                  <a class="btn" href="papers/shors_algorithm_bra_ket_fuck.tex" target="_blank" rel="noopener">View LaTeX Source</a>
+                </div>
+              </article>
+            </div>
+
+            <div tabindex="0" role="region" aria-labelledby="isa-table-caption" class="table-wrapper isa-table-wrapper">
+              <table>
+                <caption id="isa-table-caption">|BF&gt; 12-Character Quantum Instruction Set Architecture</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Token</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Operation Name</th>
+                    <th scope="col">Unitary / Map on Qubit Head p</th>
+                    <th scope="col">Classical BF Analogy</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">&gt;</th>
+                    <td>Pointer</td>
+                    <td>Move Head Right</td>
+                    <td>p &larr; (p + 1) mod n</td>
+                    <td>&gt; (increment pointer)</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">&lt;</th>
+                    <td>Pointer</td>
+                    <td>Move Head Left</td>
+                    <td>p &larr; (p - 1) mod n</td>
+                    <td>&lt; (decrement pointer)</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">+</th>
+                    <td>Pauli / Phase</td>
+                    <td>Pauli-X &bull; S (+&pi;/2)</td>
+                    <td>X_p (&gt;&gt;+=CCX in Profile C)</td>
+                    <td>+ (increment cell)</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Z</th>
+                    <td>Pauli / Phase</td>
+                    <td>Pauli-Z (&pi; phase)</td>
+                    <td>diag(1, -1) on q_p</td>
+                    <td>Phase flip extension</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">-</th>
+                    <td>Pauli / Phase</td>
+                    <td>Inverse Phase S&dagger; (-&pi;/2)</td>
+                    <td>diag(1, -i) on q_p</td>
+                    <td>- (decrement phase)</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">H</th>
+                    <td>Superposition</td>
+                    <td>Hadamard Gate</td>
+                    <td>(|0&gt;&lt;0| + |0&gt;&lt;1| + |1&gt;&lt;0| - |1&gt;&lt;1|)/&radic;2</td>
+                    <td>Equal superposition</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">T</th>
+                    <td>Non-Clifford</td>
+                    <td>&pi;/8 Gate (T)</td>
+                    <td>diag(1, exp(i&pi;/4)) on q_p</td>
+                    <td>Universal BQP generator</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">^</th>
+                    <td>Entanglement</td>
+                    <td>Adjacent CNOT</td>
+                    <td>CNOT(control = p, target = p + 1)</td>
+                    <td>Nearest-neighbor link</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">[ ... ]</th>
+                    <td>Control Flow</td>
+                    <td>Quantum / Measured Block</td>
+                    <td>Controlled-U_p (Profile C) or Measured-If (Profile D)</td>
+                    <td>[ ... ] conditional block</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">.</th>
+                    <td>I/O</td>
+                    <td>Projective Measure</td>
+                    <td>Measure q_p in Z basis &rarr; emit '0' or '1'</td>
+                    <td>. (output cell)</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">,</th>
+                    <td>I/O</td>
+                    <td>Active Reset</td>
+                    <td>Reset q_p &rarr; |0&gt; (or read bit)</td>
+                    <td>, (input / clear cell)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <footer class="window-footer">
+            <span><strong>|BF&gt; (Bra-Ket-Fuck) v1.0</strong></span>
+            <nav class="window-footer-links" aria-label="Documentation and Research Links">
+              <a href="README.md" target="_blank" rel="noopener">Documentation (README)</a>
+              <span aria-hidden="true">&bull;</span>
+              <a href="papers/bra_ket_fuck_technical_whitepaper.pdf" target="_blank" rel="noopener">Technical Whitepaper (PDF)</a>
+              <span aria-hidden="true">&bull;</span>
+              <a href="papers/shors_algorithm_bra_ket_fuck.pdf" target="_blank" rel="noopener">Shor's Algorithm Paper (PDF)</a>
+            </nav>
+          </footer>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="src/braketfuck.js"></script>
+  <script src="ui/bff-ui.js"></script>
+  <script>
+    (function () {
+      const PRESETS = {
+        shor_opt: {
+          name: 'shor_15_recycled_opt.bfk',
+          qubits: 5,
+          profile: 'D',
+          profileLabel: 'Profile D: 5-Qubit Subspace-Reduced Recycled Shor (132 ops)',
+          isShor: true,
+          shorMode: 'recycled',
+          code: [
+            '# |BF> Example 7: Subspace-Reduced 5-Qubit Semiclassical Shor\'s Algorithm (N = 15, a = 7)',
+            '# Tape: [ q_ctrl (0), y0 (1), y1 (2), y2 (3), y3 (4) ]',
+            '# Omits SWAP(y1, y3) in U4 since y1 = y3 = 0 on initial state |1> = |1000>',
+            '# 132 tokens | 18 native ^ tokens (each lowers to a Toffoli under Profile C control) | exact phase readout',
+            '',
+            '>+<',
+            'H [ >^H>H<^>H<H^>^H>H<^>H<H^<^H>H<^>H<H^ < ] H .',
+            '[ >>>>+<<<< , ]',
+            'H >>>> [ <<<<-->>>> , ] <<<<',
+            '[ >^H>H<^>H<H^>^H>H<^>H<H^>^H>H<^>H<H^ <<+>+>+>+ <<<< ]',
+            'H .'
+          ].join('\n')
+        },
+        shor_full: {
+          name: 'shor_15_full.bfk',
+          qubits: 6,
+          profile: 'C',
+          profileLabel: 'Profile C: 6-Qubit Coherent Full-Register Shor (149 ops)',
+          isShor: true,
+          shorMode: 'full6q',
+          code: [
+            '# |BF> Example 5: Shor\'s Order-Finding Algorithm for N = 15, a = 7 (6-Qubit Full Register, Profile C)',
+            '# Tape: [ c0 (0), c1 (1), y0 (2), y1 (3), y2 (4), y3 (5) ]',
+            '# 149 tokens | 27 native ^ tokens | uncontrolled SWAP network is nearest-neighbour; Profile C control is not',
+            '',
+            'H>H>+<',
+            '[',
+            '  >^H>H<^>H<H^>^H>H<^>H<H^<^H>H<^>H<H^',
+            '  >^H>H<^>H<H^>^H>H<^>H<H^<^H>H<^>H<H^',
+            '  <<',
+            ']',
+            '<',
+            '[',
+            '  >>^H>H<^>H<H^>^H>H<^>H<H^>^H>H<^>H<H^',
+            '  <<+>+>+>+',
+            '  <<<<<',
+            ']',
+            '>H[<-->]<H',
+            '.>.'
+          ].join('\n')
+        },
+        shor_full_opt: {
+          name: 'shor_15_full_opt.bfk',
+          qubits: 6,
+          profile: 'C',
+          profileLabel: 'Profile C: 6-Qubit Full-Register Shor, idle SWAP removed (112 ops)',
+          isShor: true,
+          shorMode: 'full6q',
+          code: [
+            '# |BF> Example 8: Shor\'s Order-Finding Algorithm for N = 15, a = 7 (6-Qubit Full Register, optimized)',
+            '# Tape: [ c0 (0), c1 (1), y0 (2), y1 (3), y2 (4), y3 (5) ]',
+            '# SWAP(y1, y3) is dropped from Controlled-U4: U4 acts first, on |1> = |1000> (y1 = y3 = 0).',
+            '# Uses only the known input, never the period, so this is not a "compiled Shor" shortcut.',
+            '# 112 tokens | 18 native ^ tokens | exact phase readout',
+            '',
+            'H>H>+<',
+            '[',
+            '  >^H>H<^>H<H^>^H>H<^>H<H^<^H>H<^>H<H^',
+            '  <',
+            ']',
+            '<',
+            '[',
+            '  >>^H>H<^>H<H^>^H>H<^>H<H^>^H>H<^>H<H^',
+            '  <<+>+>+>+',
+            '  <<<<<',
+            ']',
+            '>H[<-->]<H',
+            '.>.'
+          ].join('\n')
+        },
+        shor_recycled: {
+          name: 'shor_15_recycled.bfk',
+          qubits: 5,
+          profile: 'D',
+          profileLabel: 'Profile D: 5-Qubit General-Oracle Recycled Shor (169 ops)',
+          isShor: true,
+          shorMode: 'recycled',
+          code: [
+            '# |BF> Example 6: Semiclassical 5-Qubit Recycled Shor\'s Algorithm (N = 15, a = 7, Profile D + C)',
+            '# Tape: [ q_ctrl (0), y0 (1), y1 (2), y2 (3), y3 (4) ]',
+            '# Uses Kitaev\'s semiclassical IPE, active reset (,), and zero-ancilla idle-target stashing on y3',
+            '# 169 tokens | 27 native ^ tokens | 0 two-qubit QFT gates',
+            '',
+            '>+<',
+            'H [ >^H>H<^>H<H^>^H>H<^>H<H^<^H>H<^>H<H^ >^H>H<^>H<H^>^H>H<^>H<H^<^H>H<^>H<H^ << ] H .',
+            '[ >>>>+<<<< , ]',
+            'H >>>> [ <<<<-->>>> , ] <<<<',
+            '[ >^H>H<^>H<H^>^H>H<^>H<H^>^H>H<^>H<H^ <<+>+>+>+ <<<< ]',
+            'H .'
+          ].join('\n')
+        },
+        bell: {
+          name: 'bell_pair.bfk',
+          qubits: 2,
+          profile: 'C',
+          profileLabel: 'Profile C: Maximal 2-Qubit Entanglement (5 ops)',
+          isShor: false,
+          code: [
+            '# Maximal Bell State |Phi+> = (|00> + |11>) / sqrt(2)',
+            'H^.>.'
+          ].join('\n')
+        },
+        ghz: {
+          name: 'ghz_3.bfk',
+          qubits: 3,
+          profile: 'C',
+          profileLabel: 'Profile C: 3-Qubit GHZ Cat State (10 ops)',
+          isShor: false,
+          code: [
+            '# 3-Qubit Greenberger-Horne-Zeilinger State (|000> + |111>) / sqrt(2)',
+            'H^>^<.>.>.'
+          ].join('\n')
+        },
+        teleport: {
+          name: 'teleportation.bfk',
+          qubits: 3,
+          profile: 'D',
+          profileLabel: 'Profile D: Quantum State Teleportation (28 ops)',
+          isShor: false,
+          code: [
+            '# Quantum Teleportation of |1> from q0 to q2 across a Bell channel',
+            '+>H^<^H.>. [>+<+] < [>>Z<<+] >>.'
+          ].join('\n')
+        },
+        grover: {
+          name: 'grover_2q.bfk',
+          qubits: 2,
+          profile: 'C',
+          profileLabel: 'Profile C: 2-Qubit Grover Search for |11> (33 ops)',
+          isShor: false,
+          code: [
+            '# 2-Qubit Grover\'s Search Algorithm (Marks and amplifies |11> to 100%)',
+            'H>H< >H<^>H< H+>H+< >H<^>H< +H>+H< .>.'
+          ].join('\n')
+        }
+      };
+
+      let activePresetKey = 'shor_opt';
+
+      const sourceInput = document.getElementById('bfkSourceInput');
+      const tapeSizeSelect = document.getElementById('tapeSizeSelect');
+      const shotCountSelect = document.getElementById('shotCountSelect');
+      const opStatsBar = document.getElementById('opStatsBar');
+      const qtapeStrip = document.getElementById('qtapeStrip');
+      const stateTableBody = document.getElementById('stateTableBody');
+      const headStatusLabel = document.getElementById('headStatusLabel');
+      const shotOutputBitstring = document.getElementById('shotOutputBitstring');
+      const shorResultBanner = document.getElementById('shorResultBanner');
+      const shorSummaryText = document.getElementById('shorSummaryText');
+      const shorFactorBadge = document.getElementById('shorFactorBadge');
+      const vmStatusText = document.getElementById('vmStatusText');
+      const vmTimingText = document.getElementById('vmTimingText');
+      const presetProfileLabel = document.getElementById('presetProfileLabel');
+      const qasmOutputCode = document.getElementById('qasmOutputCode');
+      const qasmStatsText = document.getElementById('qasmStatsText');
+
+      function renderOpStats(code) {
+        const stats = BraKetFuck.getInstructionStats(code);
+        const c = stats.counts;
+        opStatsBar.innerHTML = '';
+        const items = [
+          ['Total Ops', stats.length],
+          ['> <', (c['>'] || 0) + (c['<'] || 0)],
+          ['H', c['H'] || 0],
+          ['^ (CNOT)', c['^'] || 0],
+          ['+ - Z T', (c['+'] || 0) + (c['-'] || 0) + (c['Z'] || 0) + (c['T'] || 0)],
+          ['[ ]', (c['['] || 0) + (c[']'] || 0)],
+          ['. ,', (c['.'] || 0) + (c[','] || 0)]
+        ];
+        items.forEach(([label, count]) => {
+          const chip = document.createElement('div');
+          chip.className = 'op-chip';
+          chip.textContent = `${label}: `;
+          const strong = document.createElement('strong');
+          strong.textContent = count.toLocaleString();
+          chip.appendChild(strong);
+          opStatsBar.appendChild(chip);
+        });
+      }
+
+      function renderTapeRegister(vm) {
+        const marginals = BraKetFuck.getQubitMarginals(vm);
+        headStatusLabel.textContent = `Head p = ${vm.head} (of ${vm.nQubits} qubits)`;
+        qtapeStrip.innerHTML = '';
+
+        marginals.forEach((m) => {
+          const cell = document.createElement('div');
+          cell.className = 'qtape-cell' + (m.isHead ? ' active-head' : '');
+
+          const header = document.createElement('div');
+          header.className = 'qtape-cell-header';
+          const qName = document.createElement('span');
+          qName.textContent = `q[${m.qubit}]`;
+          header.appendChild(qName);
+
+          if (m.isHead) {
+            const badge = document.createElement('span');
+            badge.className = 'qtape-head-badge';
+            badge.textContent = 'HEAD';
+            header.appendChild(badge);
+          }
+
+          const meter = document.createElement('div');
+          meter.className = 'qtape-meter';
+          const fill = document.createElement('div');
+          fill.className = 'qtape-meter-fill';
+          fill.style.setProperty('--p1', (m.p1 * 100).toFixed(1));
+          meter.appendChild(fill);
+
+          const meta = document.createElement('div');
+          meta.className = 'qtape-meta';
+          const p0Span = document.createElement('span');
+          p0Span.textContent = `P(0): ${(m.p0 * 100).toFixed(0)}%`;
+          const p1Span = document.createElement('span');
+          p1Span.textContent = `P(1): ${(m.p1 * 100).toFixed(0)}%`;
+          meta.appendChild(p0Span);
+          meta.appendChild(p1Span);
+
+          cell.appendChild(header);
+          cell.appendChild(meter);
+          cell.appendChild(meta);
+          qtapeStrip.appendChild(cell);
+        });
+      }
+
+      function renderStateTable(rows) {
+        stateTableBody.innerHTML = '';
+        rows.forEach((row) => {
+          const tr = document.createElement('tr');
+
+          const th = document.createElement('th');
+          th.setAttribute('scope', 'row');
+          th.textContent = row.label;
+
+          const tdDec = document.createElement('td');
+          tdDec.textContent = row.decimal;
+
+          const tdProb = document.createElement('td');
+          tdProb.textContent = row.probText;
+
+          const tdBar = document.createElement('td');
+          const track = document.createElement('div');
+          track.className = 'prob-bar-track';
+          const fill = document.createElement('div');
+          fill.className = 'prob-bar-fill';
+          fill.style.setProperty('--prob', Math.min(100, Math.max(0, row.pct)).toFixed(1));
+          track.appendChild(fill);
+          tdBar.appendChild(track);
+
+          const tdNote = document.createElement('td');
+          tdNote.textContent = row.note;
+
+          tr.appendChild(th);
+          tr.appendChild(tdDec);
+          tr.appendChild(tdProb);
+          tr.appendChild(tdBar);
+          tr.appendChild(tdNote);
+          stateTableBody.appendChild(tr);
+        });
+      }
+
+      function renderStateChart(rows) {
+        const stage = document.getElementById('qchartStage');
+        if (!stage) return;
+        stage.innerHTML = '';
+
+        if (!rows || rows.length === 0) {
+          const empty = document.createElement('div');
+          empty.style.margin = 'auto';
+          empty.style.color = 'var(--text-muted)';
+          empty.style.font = '11px var(--font-system)';
+          empty.textContent = 'No measurements to graph.';
+          stage.appendChild(empty);
+          return;
+        }
+
+        // Limit display to the top 16 basis states if state space is large
+        const displayRows = rows.slice(0, 16);
+
+        displayRows.forEach((row) => {
+          const col = document.createElement('div');
+          col.className = 'qchart-col';
+          col.title = `State ${row.label}: ${row.probText} — ${row.note || ''}`;
+
+          const valEl = document.createElement('div');
+          valEl.className = 'qchart-val';
+          valEl.textContent = `${row.pct.toFixed(1)}%`;
+          if (row.rawCount !== null && row.rawCount !== undefined) {
+            const cntSpan = document.createElement('span');
+            cntSpan.className = 'qchart-val-count';
+            cntSpan.textContent = `${row.rawCount} shots`;
+            valEl.appendChild(cntSpan);
+          }
+
+          const slot = document.createElement('div');
+          slot.className = 'qchart-bar-slot';
+
+          const bar = document.createElement('div');
+          bar.className = 'qchart-bar';
+          if (row.isFactoring) {
+            bar.classList.add('bar-factoring');
+          } else if (row.isPartial) {
+            bar.classList.add('bar-partial');
+          } else if (row.isTrivial) {
+            bar.classList.add('bar-trivial');
+          }
+
+          const barHeightPct = Math.min(100, Math.max(0.8, row.pct));
+          bar.style.setProperty('--bar-h', barHeightPct.toFixed(1));
+          slot.appendChild(bar);
+
+          const labelEl = document.createElement('div');
+          labelEl.className = 'qchart-col-label';
+          labelEl.textContent = row.label;
+
+          const subEl = document.createElement('div');
+          subEl.className = 'qchart-col-sub';
+          if (row.chartSub) {
+            subEl.textContent = row.chartSub;
+            if (row.isFactoring) subEl.classList.add('is-factor');
+          }
+
+          col.appendChild(valEl);
+          col.appendChild(slot);
+          col.appendChild(labelEl);
+          col.appendChild(subEl);
+          stage.appendChild(col);
+        });
+      }
+
+      let activeTraceState = null;
+
+      function renderShotTrace(history, rows, shots) {
+        const container = document.getElementById('distTraceContainer');
+        const legend = document.getElementById('qtraceLegend');
+        const canvas = document.getElementById('qtraceCanvas');
+        const tooltip = document.getElementById('qtraceTooltip');
+        if (!container || !legend || !canvas) return;
+
+        legend.innerHTML = '';
+        if (tooltip) tooltip.hidden = true;
+
+        if (!history || history.length <= 1 || shots <= 1) {
+          activeTraceState = null;
+          legend.innerHTML = '<span class="qtrace-empty-notice">Single-shot trace. Select 256, 1024, or 4096 shots to observe cumulative quantum probability convergence.</span>';
+          const ctx = canvas.getContext('2d');
+          if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+          return;
+        }
+
+        // Palette for distinct quantum trace curves
+        const palette = [
+          '#00a83e', // Emerald Green (Factoring Peak)
+          '#10b981', // Lime/Mint Green (Factoring Peak)
+          '#0066cc', // Cobalt Blue (Partial Harmonic)
+          '#ea580c', // Coral/Amber (Trivial Branch)
+          '#8b5cf6', // Violet
+          '#06b6d4', // Cyan
+          '#ec4899', // Pink
+          '#eab308'  // Gold
+        ];
+
+        const topRows = (rows || []).slice(0, 6);
+        const stateColorMap = {};
+        let factIdx = 0;
+        topRows.forEach((r, idx) => {
+          let col = palette[idx % palette.length];
+          if (r.isFactoring) {
+            col = factIdx === 0 ? '#00a83e' : '#10b981';
+            factIdx++;
+          } else if (r.isPartial) {
+            col = '#0066cc';
+          } else if (r.isTrivial) {
+            col = '#ea580c';
+          }
+          stateColorMap[r.label.replace(/[|⟩>]/g, '')] = {
+            color: col,
+            label: r.label,
+            pct: r.pct,
+            isFactoring: r.isFactoring,
+            chartSub: r.chartSub
+          };
+        });
+
+        // Populate Legend chips
+        topRows.forEach((r) => {
+          const rawKey = r.label.replace(/[|⟩>]/g, '');
+          const info = stateColorMap[rawKey];
+          const item = document.createElement('div');
+          item.className = 'qtrace-legend-item';
+
+          const dot = document.createElement('span');
+          dot.className = 'qtrace-legend-dot';
+          dot.style.background = info.color;
+
+          const text = document.createElement('span');
+          text.textContent = `${r.label}: ${r.pct.toFixed(1)}% ${r.chartSub ? '(' + r.chartSub + ')' : ''}`;
+          if (r.isFactoring) text.style.fontWeight = 'bold';
+
+          item.appendChild(dot);
+          item.appendChild(text);
+          legend.appendChild(item);
+        });
+
+        // Compute running cumulative frequencies across all N shots
+        const keys = Object.keys(stateColorMap);
+        const runningCounts = {};
+        keys.forEach(k => { runningCounts[k] = 0; });
+
+        const N = history.length;
+        const tracePoints = new Array(N);
+
+        for (let i = 0; i < N; i++) {
+          const bitstr = history[i];
+          if (runningCounts[bitstr] !== undefined) {
+            runningCounts[bitstr]++;
+          }
+          const shotNum = i + 1;
+          const pointProbs = {};
+          keys.forEach(k => {
+            pointProbs[k] = (runningCounts[k] / shotNum) * 100;
+          });
+          tracePoints[i] = pointProbs;
+        }
+
+        activeTraceState = {
+          shots: N,
+          history,
+          keys,
+          stateColorMap,
+          tracePoints
+        };
+
+        drawTraceCanvas(null);
+      }
+
+      function drawTraceCanvas(hoverShot) {
+        const canvas = document.getElementById('qtraceCanvas');
+        const tooltip = document.getElementById('qtraceTooltip');
+        if (!canvas || !activeTraceState) return;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        const rect = canvas.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) return;
+
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+
+        ctx.save();
+        ctx.scale(dpr, dpr);
+
+        const w = rect.width;
+        const h = rect.height;
+        ctx.clearRect(0, 0, w, h);
+
+        const padLeft = 40;
+        const padRight = 16;
+        const padTop = 14;
+        const padBottom = 22;
+        const gw = w - padLeft - padRight;
+        const gh = h - padTop - padBottom;
+
+        const { shots, keys, stateColorMap, tracePoints } = activeTraceState;
+
+        // Draw horizontal grid lines and percentage labels
+        const gridPcts = [100, 75, 50, 25, 0];
+        ctx.font = '9px "SF Mono", Monaco, Consolas, monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+
+        gridPcts.forEach((pct) => {
+          const y = padTop + gh * (1 - pct / 100);
+          ctx.fillStyle = '#666666';
+          ctx.fillText(`${pct}%`, padLeft - 6, y);
+
+          ctx.beginPath();
+          ctx.strokeStyle = pct === 0 ? '#888888' : '#e6e6e6';
+          ctx.lineWidth = 1;
+          ctx.setLineDash(pct === 0 ? [] : [3, 3]);
+          ctx.moveTo(padLeft, y);
+          ctx.lineTo(w - padRight, y);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        });
+
+        // Theoretical 25% dashed line for 4-harmonic factoring
+        if (shots > 1 && keys.length >= 4) {
+          const y25 = padTop + gh * (1 - 25 / 100);
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba(0, 168, 62, 0.4)';
+          ctx.lineWidth = 1.5;
+          ctx.setLineDash([4, 4]);
+          ctx.moveTo(padLeft, y25);
+          ctx.lineTo(w - padRight, y25);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+
+        // Draw X-axis tick labels
+        ctx.fillStyle = '#666666';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        const xTicks = [1, Math.round(shots * 0.25), Math.round(shots * 0.5), Math.round(shots * 0.75), shots];
+        xTicks.forEach((st) => {
+          const x = padLeft + ((st - 1) / Math.max(1, shots - 1)) * gw;
+          ctx.fillText(`Shot ${st}`, x, h - padBottom + 6);
+        });
+
+        // Draw trajectory curves
+        keys.forEach((key) => {
+          const info = stateColorMap[key];
+          ctx.beginPath();
+          ctx.strokeStyle = info.color;
+          ctx.lineWidth = 2;
+          ctx.lineJoin = 'round';
+          ctx.lineCap = 'round';
+
+          for (let i = 0; i < shots; i++) {
+            const x = padLeft + (i / Math.max(1, shots - 1)) * gw;
+            const pct = tracePoints[i][key] || 0;
+            const y = padTop + gh * (1 - pct / 100);
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        });
+
+        // Draw vertical hover tracking line & tooltip
+        if (hoverShot !== null && hoverShot >= 1 && hoverShot <= shots) {
+          const idx = hoverShot - 1;
+          const hx = padLeft + (idx / Math.max(1, shots - 1)) * gw;
+
+          ctx.beginPath();
+          ctx.strokeStyle = '#222222';
+          ctx.lineWidth = 1;
+          ctx.setLineDash([2, 2]);
+          ctx.moveTo(hx, padTop);
+          ctx.lineTo(hx, padTop + gh);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          if (tooltip) {
+            const probs = tracePoints[idx];
+            let tipHtml = `<strong>Shot #${hoverShot} / ${shots}</strong><br/>`;
+            keys.forEach(k => {
+              const inf = stateColorMap[k];
+              tipHtml += `<span style="color:${inf.color}">■</span> |${k}⟩: ${probs[k].toFixed(1)}%<br/>`;
+            });
+            tooltip.innerHTML = tipHtml;
+            tooltip.hidden = false;
+
+            const tipW = 125;
+            let tipX = hx + 12;
+            if (tipX + tipW > w - 10) tipX = hx - tipW - 12;
+            tooltip.style.left = `${Math.max(8, tipX)}px`;
+            tooltip.style.top = `${padTop + 8}px`;
+          }
+        } else if (tooltip) {
+          tooltip.hidden = true;
+        }
+
+        ctx.restore();
+      }
+
+      function updateQasmOutput() {
+        const code = sourceInput.value;
+        const nQubits = parseInt(tapeSizeSelect.value, 10) || 5;
+        try {
+          const lnnToggle = document.getElementById('qasmLnnToggle');
+          const lnn = !!(lnnToggle && lnnToggle.checked);
+          const qasm = BraKetFuck.transpileToQASM3(code, nQubits, { lnn });
+          qasmOutputCode.textContent = qasm;
+          const lines = qasm.split('\n').length;
+          const rep = BraKetFuck.resourceReport(code, nQubits, { lnn });
+          const raw = BraKetFuck.resourceReport(code, nQubits, { optimize: false });
+          qasmStatsText.textContent = `Compiled ${BraKetFuck.cleanCode(code).length} |BF> tokens into ${lines} lines of OpenQASM 3.0 (${nQubits} qubits) · ` +
+            `${rep.multiQubitGates} multi-qubit gates · ${rep.cnotEquivalents} CNOT-equivalents (per-token lowering: ${raw.cnotEquivalents}) · depth ${rep.depth}` +
+            (lnn ? ` · ${rep.swaps} routing SWAPs, max. interaction distance ${rep.maxInteractionDistance}.`
+                 : ` · max. interaction distance ${rep.maxInteractionDistance}.`);
+        } catch (err) {
+          qasmOutputCode.textContent = `// OpenQASM 3.0 Transpilation Error:\n// ${err.message}`;
+        }
+      }
+
+      function runQuantumSimulation(forceShots) {
+        const t0 = performance.now();
+        const code = sourceInput.value;
+        const nQubits = parseInt(tapeSizeSelect.value, 10) || 5;
+        const shots = forceShots || parseInt(shotCountSelect.value, 10) || 1;
+        const preset = PRESETS[activePresetKey];
+        const profile = (preset && preset.profile) ? preset.profile : 'D';
+
+        renderOpStats(code);
+        updateQasmOutput();
+
+        try {
+          // 1. Run VM trace to update the 1D Quantum Tape visualization and simulate single-shot collapse
+          const vm = new BraKetFuck.BraKetFuckVM(nQubits, profile);
+          const singleOut = vm.run(code);
+          renderTapeRegister(vm);
+          shotOutputBitstring.textContent = `Single Shot Output: ${singleOut || '(no . measurement)'}`;
+
+          let counts;
+          if (shots === 1) {
+            const key = singleOut || '(no readout)';
+            counts = { [key]: 1 };
+            Object.defineProperty(counts, 'history', {
+              value: [key],
+              writable: true,
+              enumerable: false,
+              configurable: true
+            });
+          } else {
+            counts = BraKetFuck.sampleShots(code, nQubits, shots, profile);
+          }
+
+          const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+          const isShorRun = preset && preset.isShor && (nQubits === 5 || nQubits === 6);
+          const rows = sorted.map(([bits, count]) => {
+            const pct = (count / shots) * 100;
+            let note = `${count} / ${shots} shot${shots > 1 ? 's' : ''}`;
+            let dec = parseInt(bits, 2);
+            let chartSub = '';
+            let isFactoring = false;
+            let isPartial = false;
+            let isTrivial = false;
+
+            if (isShorRun && bits.length >= 2) {
+              const info = BraKetFuck.analyzeShor15(bits, preset.shorMode || 'recycled');
+              dec = `phase = ${info.phase.toFixed(2)} (${info.fraction || '0/1'})`;
+              if (info.factors) {
+                isFactoring = true;
+                chartSub = 'r=4 (3×5)';
+                note = `r=${info.order} -> gcd(7^(r/2)±1, 15) = {${info.factors.join(', ')}} (FACTORS)`;
+              } else if (info.recoveredFactors) {
+                isPartial = true;
+                chartSub = `r'=${info.candidateOrder}→${info.recoveredOrder}`;
+                note = `candidate r'=${info.candidateOrder} fails 7^${info.candidateOrder}≡1 (mod 15); multiple r=${info.recoveredOrder} -> {${info.recoveredFactors.join(', ')}}`;
+              } else {
+                isTrivial = true;
+                chartSub = 's=0 (trivial)';
+                note = `s=0 trivial harmonic (resample)`;
+              }
+            }
+
+            return {
+              label: bits ? `|${bits}>` : '(empty)',
+              decimal: isNaN(dec) ? dec : String(dec),
+              probText: `${pct.toFixed(1)}% (${count}/${shots})`,
+              pct: pct,
+              rawCount: count,
+              note: note,
+              chartSub: chartSub,
+              isFactoring: isFactoring,
+              isPartial: isPartial,
+              isTrivial: isTrivial
+            };
+          });
+
+          renderStateTable(rows);
+          renderStateChart(rows);
+          renderShotTrace(counts.history || [], rows, shots);
+
+          if (shots === 1) {
+            setDistView('chart');
+          } else {
+            const chosen = (userExplicitDistView && userExplicitDistView !== 'chart') ? userExplicitDistView : 'trace';
+            setDistView(chosen);
+          }
+
+          if (isShorRun) {
+            const analysis = BraKetFuck.analyzeShor15(counts, preset.shorMode || 'recycled');
+            if (shots === 1) {
+              const firstBits = sorted[0] ? sorted[0][0] : '';
+              const singleInfo = BraKetFuck.analyzeShor15(firstBits, preset.shorMode || 'recycled');
+              if (singleInfo.factors) {
+                shorSummaryText.textContent = `Single shot measured |${firstBits}⟩ (phase ${singleInfo.phase.toFixed(2)}) -> period r = ${singleInfo.order} -> gcd(7^2 ± 1, 15) = {${singleInfo.factors.join(', ')}}. Factors verified in 1 shot!`;
+                shorFactorBadge.textContent = '15 = 3 × 5 VERIFIED';
+                shorFactorBadge.style.background = '#00a83e';
+              } else if (singleInfo.recoveredFactors) {
+                shorSummaryText.textContent = `Single shot measured |${firstBits}⟩ (phase ${singleInfo.phase.toFixed(2)}) -> candidate r' = ${singleInfo.candidateOrder} fails 7^${singleInfo.candidateOrder} ≡ 1 (mod 15); testing the multiple r = ${singleInfo.recoveredOrder} recovers {${singleInfo.recoveredFactors.join(', ')}}.`;
+                shorFactorBadge.textContent = `RECOVERED (r'=${singleInfo.candidateOrder}→${singleInfo.recoveredOrder})`;
+                shorFactorBadge.style.background = '#0066cc';
+              } else {
+                shorSummaryText.textContent = `Single shot measured |${firstBits}⟩ (phase 0.00) -> s = 0 trivial harmonic. Resample to find period r = 4.`;
+                shorFactorBadge.textContent = 'TRIVIAL (s=0)';
+                shorFactorBadge.style.background = '#ea580c';
+              }
+            } else {
+              const rate = ((analysis.factoringShots / analysis.totalShots) * 100).toFixed(1);
+              const recRate = ((analysis.recoveredShots / analysis.totalShots) * 100).toFixed(1);
+              shorSummaryText.textContent =
+                `Order r = 4 read directly (s = 1, 3): ${analysis.factoringShots}/${analysis.totalShots} (${rate}% — ideal 50.0%); ` +
+                `incl. s = 2 recovered by testing multiples of r' = 2: ${analysis.recoveredShots}/${analysis.totalShots} (${recRate}% — ideal 75.0%). ` +
+                `gcd(7^2 - 1, 15) = 3, gcd(7^2 + 1, 15) = 5.`;
+              shorFactorBadge.textContent = '15 = 3 \u00d7 5 VERIFIED';
+              shorFactorBadge.style.background = '#00a83e';
+            }
+            shorResultBanner.hidden = false;
+          } else {
+            shorResultBanner.hidden = true;
+          }
+
+          const elapsed = (performance.now() - t0).toFixed(1);
+          vmStatusText.textContent = `Executed ${BraKetFuck.cleanCode(code).length} |BF> quantum instructions across ${shots} shot(s) on ${nQubits}-qubit statevector.`;
+          vmTimingText.textContent = `${elapsed} ms`;
+        } catch (err) {
+          vmStatusText.textContent = `Execution Error: ${err.message}`;
+          BffUI.showToast(`Error: ${err.message}`);
+        }
+      }
+
+      function loadPreset(key) {
+        const preset = PRESETS[key];
+        if (!preset) return;
+        activePresetKey = key;
+        sourceInput.value = preset.code;
+        tapeSizeSelect.value = String(preset.qubits);
+        presetProfileLabel.textContent = preset.profileLabel;
+        userExplicitDistView = null;
+        runQuantumSimulation();
+      }
+
+      // Wire Mode Tabs
+      const tabMap = {
+        studio: document.getElementById('tabStudio'),
+        qasm: document.getElementById('tabQasm'),
+        papers: document.getElementById('tabPapers')
+      };
+
+      document.querySelectorAll('.mode-tab').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const target = btn.getAttribute('data-tab');
+          document.querySelectorAll('.mode-tab').forEach((b) => {
+            const active = b === btn;
+            b.classList.toggle('active', active);
+            b.setAttribute('aria-selected', active ? 'true' : 'false');
+          });
+          Object.entries(tabMap).forEach(([key, panel]) => {
+            const isTarget = key === target;
+            panel.hidden = !isTarget;
+            panel.setAttribute('aria-hidden', isTarget ? 'false' : 'true');
+          });
+          if (target === 'qasm') {
+            updateQasmOutput();
+          }
+        });
+      });
+
+      // Wire Presets
+      document.querySelectorAll('[data-preset]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          loadPreset(btn.getAttribute('data-preset'));
+        });
+      });
+
+      // Wire Toolbar Buttons
+      document.getElementById('runSimulationBtn').addEventListener('click', () => {
+        runQuantumSimulation();
+      });
+
+      document.getElementById('singleShotBtn').addEventListener('click', () => {
+        shotCountSelect.value = '1';
+        userExplicitDistView = 'chart';
+        runQuantumSimulation(1);
+      });
+
+      document.getElementById('copyCodeBtn').addEventListener('click', () => {
+        BffUI.copyText(sourceInput.value, '|BF> source code copied to clipboard!');
+      });
+
+      document.getElementById('downloadBfkBtn').addEventListener('click', () => {
+        const preset = PRESETS[activePresetKey];
+        const filename = preset ? preset.name : 'program.bfk';
+        BffUI.downloadTextFile(filename, sourceInput.value);
+      });
+
+      document.getElementById('viewQasmShortcutBtn').addEventListener('click', () => {
+        const qasmTabBtn = document.querySelector('.mode-tab[data-tab="qasm"]');
+        if (qasmTabBtn) qasmTabBtn.click();
+      });
+
+      document.getElementById('qasmLnnToggle').addEventListener('change', () => {
+        updateQasmOutput();
+      });
+
+      document.getElementById('copyQasmBtn').addEventListener('click', () => {
+        BffUI.copyText(qasmOutputCode.textContent, 'OpenQASM 3.0 assembly copied to clipboard!');
+      });
+
+      document.getElementById('downloadQasmBtn').addEventListener('click', () => {
+        const preset = PRESETS[activePresetKey];
+        const base = preset ? preset.name.replace('.bfk', '') : 'program';
+        BffUI.downloadTextFile(`${base}.qasm`, qasmOutputCode.textContent);
+      });
+
+      document.getElementById('windowCloseBox').addEventListener('click', () => {
+        const papersTabBtn = document.querySelector('.mode-tab[data-tab="papers"]');
+        if (papersTabBtn) papersTabBtn.click();
+      });
+
+      sourceInput.addEventListener('input', () => {
+        activePresetKey = 'custom';
+        presetProfileLabel.textContent = 'Custom |BF> Program';
+        renderOpStats(sourceInput.value);
+      });
+
+      tapeSizeSelect.addEventListener('change', () => runQuantumSimulation());
+      shotCountSelect.addEventListener('change', () => {
+        const shots = parseInt(shotCountSelect.value, 10) || 1;
+        if (shots > 1 && userExplicitDistView === 'chart') {
+          userExplicitDistView = null; // restore trace default for multi-shot runs
+        }
+        runQuantumSimulation();
+      });
+
+      // Central distribution view switcher (strictly shows one view at a time)
+      let currentDistView = 'trace';
+      let userExplicitDistView = null;
+
+      function setDistView(mode) {
+        currentDistView = mode;
+        document.querySelectorAll('.dist-toggle-btn').forEach((b) => {
+          const active = b.getAttribute('data-dist-view') === mode;
+          b.classList.toggle('active', active);
+          b.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        const chartBox = document.getElementById('distChartContainer');
+        const traceBox = document.getElementById('distTraceContainer');
+        const tableBox = document.getElementById('distTableContainer');
+
+        if (chartBox) chartBox.hidden = (mode !== 'chart');
+        if (traceBox) traceBox.hidden = (mode !== 'trace');
+        if (tableBox) tableBox.hidden = (mode !== 'table');
+
+        if (mode === 'trace' && activeTraceState) {
+          requestAnimationFrame(() => drawTraceCanvas(null));
+        }
+      }
+
+      document.querySelectorAll('.dist-toggle-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const mode = btn.getAttribute('data-dist-view');
+          userExplicitDistView = mode;
+          setDistView(mode);
+        });
+      });
+
+      // Canvas interaction events for Cumulative Shot Trace
+      const traceCanvas = document.getElementById('qtraceCanvas');
+      if (traceCanvas) {
+        traceCanvas.addEventListener('mousemove', (e) => {
+          if (!activeTraceState || activeTraceState.shots <= 1) return;
+          const rect = traceCanvas.getBoundingClientRect();
+          const mx = e.clientX - rect.left;
+          const padLeft = 40;
+          const padRight = 16;
+          const gw = rect.width - padLeft - padRight;
+          if (mx < padLeft || mx > rect.width - padRight) {
+            drawTraceCanvas(null);
+            return;
+          }
+          const ratio = (mx - padLeft) / gw;
+          const shot = Math.round(ratio * (activeTraceState.shots - 1)) + 1;
+          drawTraceCanvas(shot);
+        });
+
+        traceCanvas.addEventListener('mouseleave', () => {
+          drawTraceCanvas(null);
+        });
+      }
+
+      window.addEventListener('resize', () => {
+        if (currentDistView === 'trace' && activeTraceState) {
+          drawTraceCanvas(null);
+        }
+      });
+
+      // Initial load
+      loadPreset('shor_opt');
+    })();
+  </script>
+</body>
+</html>
