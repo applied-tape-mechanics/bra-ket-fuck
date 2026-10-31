@@ -11,7 +11,7 @@
 
 > **What if Urban Müller's 1993 Brainfuck tape held entangled qubits instead of 8-bit bytes?**
 >
-> **`|BF>` (Bra-Ket-Fuck)** replaces the classical byte array with a linear $N$-qubit Hilbert register $\mathcal{H} = (\mathbb{C}^2)^{\otimes N}$ and lifts the 8 classical Brainfuck tokens into a **12-character Clifford+$T$ instruction set** capable of expressing **Shor's Prime Factorization Algorithm ($N = 15 \to 3 \times 5$) in 132 characters** (or **112 characters** on a 6-qubit coherent register) — with **zero ancilla qubits** and **zero external dependencies**.
+> **`|BF>` (Bra-Ket-Fuck)** replaces the classical byte array with a linear $N$-qubit Hilbert register $\mathcal{H} = (\mathbb{C}^2)^{\otimes N}$ and lifts the 8 classical Brainfuck tokens into a **12-character Clifford+$T$ instruction set** capable of expressing **Shor's Prime Factorization Algorithm ($N = 15 \to 3 \times 5$) in 132 characters** (or **112 characters** on a 6-qubit coherent register) — with **zero ancilla qubits** and **zero external dependencies**. Try the **[Live Quantum Tape Workbench on GitHub Pages](https://applied-tape-mechanics.github.io/bra-ket-fuck/)** to step through statevectors, Bloch spheres, and Shor's algorithm directly in your browser.
 
 ---
 
